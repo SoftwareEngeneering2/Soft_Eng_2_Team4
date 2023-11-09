@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
+    private static String loginEmail;
 
     private final UserRepository userRepository;
 
@@ -22,6 +22,7 @@ public class UserService {
             return false;
         else{
             UserSignUpModel userLogin = model.get();
+            loginEmail = userLogin.getEmail();
             return userLoginModel.getPassword().equals(userLogin.getPassword());
         }
 
@@ -35,6 +36,10 @@ public class UserService {
 
         userRepository.save(userSignUpModel);
         return true;
+    }
+
+    public static String getLoginEmail(){
+        return loginEmail;
     }
 
 }

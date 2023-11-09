@@ -23,8 +23,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email/password is incorrect");
         }
 
-        userService.login(userLoginModel);
-        return new RedirectView("enter api endpoint here");
+        return new RedirectView("https://www.google.com/"); //change the endpoint, this is just a test
     }
 
     @PostMapping("/signup")
@@ -33,7 +32,6 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email is already taken");
         }
 
-        userService.signup(userSignUpModel);
         return new RedirectView("enter api endpoint here");
     }
 

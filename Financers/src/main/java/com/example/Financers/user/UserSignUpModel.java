@@ -1,11 +1,12 @@
 package com.example.Financers.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.Financers.userExpenses.UserExpenseModel;
+import com.example.Financers.userIncome.UserIncomeModel;
+import jakarta.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @Entity
@@ -14,14 +15,30 @@ public class UserSignUpModel {
 
     @NotNull
     @NotBlank
+    @Column(
+            name = "name"
+    )
     private String name;
 
     @Id
+    @Column(
+            name = "email"
+    )
     private String email;
 
     @NotNull
     @NotBlank
+    @Column(
+            name = "password"
+    )
     private String password;
+
+    @OneToMany(mappedBy = "userSignUpModel", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<UserIncomeModel> userIncomeModels;
+
+    @OneToMany(mappedBy = "userSignUpModel", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<UserExpenseModel> userExpenseModels;
+
 
     public UserSignUpModel() {
     }
