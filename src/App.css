@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+/* App.css */
+.body-background {
+  /* Set the background image */
+  background-image: url('../assets/images/financialim.jpeg'); /* Adjust the path as needed */
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the image */
+  background-attachment: fixed; /* Fixed background */
+
+  /* Use a pseudo-element to add a white overlay with reduced opacity */
+  position: relative;
+}
+
+.body-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5); /* Adjust opacity to lighten the image */
+  z-index: -1; /* Ensure the overlay is behind the content */
+}
+
+
+.rounder-custom {
+  border-radius: 20px;
+}
