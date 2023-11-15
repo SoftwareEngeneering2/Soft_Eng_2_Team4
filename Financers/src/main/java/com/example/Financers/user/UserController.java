@@ -1,5 +1,6 @@
 package com.example.Financers.user;
 
+import com.example.Financers.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,4 +36,10 @@ public class UserController {
         return new RedirectView("enter api endpoint here");
     }
 
-}
+    @RequestMapping("/signup_fname={fname}_lname={lname}_email={email}_password={password}")
+    public RedirectView signUp(String fname, String lname, String email, String password){
+        UserSignUpModel userSignUpModel = new UserSignUpModel(fname, email, password);
+        userService.confirmSignup(userSignUpModel);
+
+        return new RedirectView("enter api endpoint here");
+    }}

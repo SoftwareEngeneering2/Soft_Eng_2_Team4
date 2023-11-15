@@ -1,5 +1,6 @@
 package com.example.Financers.user;
 
+import com.example.Financers.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +11,12 @@ public class UserService {
     private static String loginEmail;
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     public boolean login(UserLoginModel userLoginModel) {
@@ -34,8 +37,13 @@ public class UserService {
         if (optionalUserSignUpModel.isPresent())
             return false;
 
-        userRepository.save(userSignUpModel);
+        String link = "";
+        emailService.sendEmail(userSignUpModel.getEmail(), link);
         return true;
+    }
+
+    public void confirmSignup(UserSignUpModel userSignUpModel) {
+        userRepository.save(userSignUpModel);
     }
 
     public static String getLoginEmail(){
