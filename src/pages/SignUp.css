@@ -1,0 +1,37 @@
+/* SignUp.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevents scrolling */
+}
+
+.signup-container {
+  position: relative;
+  height: 100vh; /* Full height of the viewport */
+  overflow: hidden; /* Hide anything that goes outside the container */
+}
+
+.background-video {
+  position: fixed; /* Fixed position to cover the whole screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover the entire area of the container */
+  z-index: -1; /* Ensure it's behind the content */
+}
+
+.signup-content {
+  height: 100vh; /* Full viewport height */
+  display: flex; /* Use Flexbox for centering */
+  align-items: center; /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+}
+
+.signup-form {
+  background: rgb(255, 255, 255); /* Semi-transparent white background */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Add more styles as needed */
+}
