@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/expense")
+@CrossOrigin(origins = "*")
 public class UserExpenseController {
     private final UserExpenseService userExpenseService;
 
