@@ -1,174 +1,125 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Row, Col, Table, Alert } from 'react-bootstrap';
-import backgroundVideo from '../videos/homeScreenBg.mp4';
-import './SavingsPlan.css';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import backgroundVideo from '../videos/homeScreenBg.mp4'; // Make sure the path is correct
+import './SavingsPlan.css'; // Ensure this CSS file exists with the appropriate styles
 
 const SavingsPlan = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [expenseFormData, setExpenseFormData] = useState({
-    name: '',
-    amount: ''
-  });
-  const [savingsInfo, setSavingsInfo] = useState({
-    target: '',
-    apy: '',
-    months: ''
-  });
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState('');
+  const [APY, setAPY] = useState('');
+  const [target, setTarget] = useState('');
+  const [expectedMonthlySavings, setExpectedMonthlySavings] = useState('');
+  const [desiredMonthsToSaveFor, setDesiredMonthsToSaveFor] = useState('');
+  const [calculationOption, setCalculationOption] = useState('expectedMonthlySavings');
+  const [result, setResult] = useState('');
 
-  const handleExpenseChange = (e) => {
-    setExpenseFormData({ ...expenseFormData, [e.target.name]: e.target.value });
-  };
+  const calculateSavingsPlan = () => {
+    const requestData = {
+      APY: parseFloat(APY),
+      target: parseFloat(target),
+    };
 
-  const handleExpenseSubmit = (e) => {
-    e.preventDefault();
-    setExpenses([...expenses, expenseFormData]);
-    setExpenseFormData({ name: '', amount: '' }); // Reset the form fields
-  };
-
-  const handleSavingsInfoChange = (e) => {
-    setSavingsInfo({ ...savingsInfo, [e.target.name]: e.target.value });
-  };
-
-  const handleSavingsSubmit = async (e) => {
-    e.preventDefault();
-    // Replace the below URL with your actual API endpoint
-    const apiUrl = 'http://yourapi/savings';
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(savingsInfo),
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setResult(data);
-    } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred while calculating the savings plan.');
+    let endpoint = '';
+    if (calculationOption === 'expectedMonthlySavings') {
+      requestData.expectedMonthlySavings = parseFloat(expectedMonthlySavings);
+      endpoint = '/api/v1/savings_plan/calculate_by_monthly_savings';
+    } else {
+      requestData.desiredMonthsToSaveFor = parseInt(desiredMonthsToSaveFor);
+      endpoint = '/api/v1/savings_plan/calculate_by_desired_months';
     }
+
+    // Make HTTP POST request to the Spring Boot backend
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    })
+    .then(response => response.json())
+    .then(data => setResult(typeof data === 'string' ? data : JSON.stringify(data)))
+    .catch(error => console.error('Error:', error));
   };
 
   return (
-    <div className="savings-plan-container">
+    <div className="content-background">
       <video autoPlay loop muted className="background-video">
         <source src={backgroundVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <Container className="pt-5">
-        <div className="p-3 mb-2 bg-gradient-info text-white">
-          <h1 className="text-center" variant="">Savings Plan Page</h1>
-          
-          {/* Form for adding expenses */}
-          <Form onSubmit={handleExpenseSubmit} className="form-spacing">
-            <Row>
-              <Col>
-                <Form.Group controlId="expenseName">
-                  <Form.Label>Expense Name</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    name="name" 
-                    value={expenseFormData.name} 
-                    onChange={handleExpenseChange} 
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="expenseAmount">
-                  <Form.Label>Amount</Form.Label>
-                  <Form.Control 
-                    type="number" 
-                    name="amount" 
-                    value={expenseFormData.amount} 
-                    onChange={handleExpenseChange} 
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Button type="submit" className="mt-2">Add Expense</Button>
-          </Form>
+      <Container className="savings-plan-content">
+        <h2 className="text-white">Savings Plan Calculator</h2>
+        <Form>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm="4" className="text-white">APY (%):</Form.Label>
+            <Col sm="8">
+              <Form.Control
+                type="number"
+                value={APY}
+                onChange={(e) => setAPY(e.target.value)}
+                min="0"
+                step="0.01"
+              />
+            </Col>
+          </Form.Group>
 
-          {/* Display the expenses in a table */}
-          <Table striped bordered hover className="mt-4">
-            <thead>
-              <tr>
-                <th>Expense Name</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map((expense, index) => (
-                <tr key={index}>
-                  <td>{expense.name}</td>
-                  <td>{expense.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm="4" className="text-white">Target Savings ($):</Form.Label>
+            <Col sm="8">
+              <Form.Control
+                type="number"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+                min="0"
+              />
+            </Col>
+          </Form.Group>
 
-          {/* Form for savings goal */}
-          <Form onSubmit={handleSavingsSubmit} className="form-spacing">
-            <Row>
-              <Col>
-                <Form.Group controlId="target">
-                  <Form.Label>Savings Goal</Form.Label>
-                  <Form.Control 
-                    type="number" 
-                    name="target" 
-                    value={savingsInfo.target} 
-                    onChange={handleSavingsInfoChange} 
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="apy">
-                  <Form.Label>Annual Percentage Yield (APY)</Form.Label>
-                  <Form.Control 
-                    type="number" 
-                    name="apy" 
-                    value={savingsInfo.apy} 
-                    onChange={handleSavingsInfoChange} 
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="months">
-                  <Form.Label>Timeframe (Months)</Form.Label>
-                  <Form.Control 
-                    type="number" 
-                    name="months" 
-                    value={savingsInfo.months} 
-                    onChange={handleSavingsInfoChange} 
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Button type="submit" variant="primary" className="mt-2">Calculate Savings Plan</Button>
-          </Form>
+          <Row className="mb-3">
+            <Col sm="6">
+              <Form.Check 
+                type="radio"
+                label="Expected Monthly Savings"
+                name="calculationOption"
+                value="expectedMonthlySavings"
+                checked={calculationOption === 'expectedMonthlySavings'}
+                onChange={() => setCalculationOption('expectedMonthlySavings')}
+                className="text-white"
+              />
+              <Form.Control
+                type="number"
+                value={expectedMonthlySavings}
+                onChange={(e) => setExpectedMonthlySavings(e.target.value)}
+                disabled={calculationOption !== 'expectedMonthlySavings'}
+                min="0"
+              />
+            </Col>
+            <Col sm="6">
+              <Form.Check 
+                type="radio"
+                label="Desired Months to Save For"
+                name="calculationOption"
+                value="desiredMonthsToSaveFor"
+                checked={calculationOption === 'desiredMonthsToSaveFor'}
+                onChange={() => setCalculationOption('desiredMonthsToSaveFor')}
+                className="text-white"
+              />
+              <Form.Control
+                type="number"
+                value={desiredMonthsToSaveFor}
+                onChange={(e) => setDesiredMonthsToSaveFor(e.target.value)}
+                disabled={calculationOption !== 'desiredMonthsToSaveFor'}
+                min="0"
+              />
+            </Col>
+          </Row>
 
-          {/* Display the calculation results */}
-          {result && (
-            <div className="mt-4">
-              <Alert variant="success">
-                To reach your savings goal of {savingsInfo.target}, you need to save {result.monthlyAmountNeeded} each month for {result.monthsToSave} months.
-              </Alert>
-            </div>
-          )}
-
-          {/* Display error message */}
-          {error && (
-            <Alert variant="danger" className="mt-4">{error}</Alert>
-          )}
-        </div>
+          <Button variant="success" onClick={calculateSavingsPlan} className="w-100">
+            Calculate
+          </Button>
+          {result && <div className="result-message mt-3">{result}</div>}
+        </Form>
       </Container>
     </div>
   );
 };
 
 export default SavingsPlan;
-

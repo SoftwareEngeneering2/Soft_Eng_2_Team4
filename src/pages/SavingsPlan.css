@@ -1,6 +1,6 @@
 /* SavingsPlan.css */
 .content-background {
-    background-color: rgba(255, 255, 255, 0.8); /* White with opacity for translucence */
+    background-color: rgba(0, 0, 0, 0.8); /* White with opacity for translucence */
     border-radius: 15px; /* Rounded corners */
     padding: 1rem; /* Padding around the content */
     margin-top: 2rem; /* Spacing from the top */
