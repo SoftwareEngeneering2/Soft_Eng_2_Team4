@@ -19,14 +19,15 @@ public class DebtPayOffController {
     }
 
     @PostMapping("/months")
-    public ResponseEntity<Object> getMonthToPayOff(@RequestBody MonthToPayOffModel monthToPayOffModel){
+    public ResponseEntity<Object> getMonthToPayOff(@RequestBody MonthToPayOffModel monthToPayOffModel) {
         int totalMonths = debtPayOffService.calculateMonthsToPayOff(monthToPayOffModel);
-        if(debtPayOffService.getDisposalIncome()==null)
+        if (debtPayOffService.getDisposalIncome() == null)
             return ResponseEntity.badRequest().body("Unauthorized User");
-        else if(debtPayOffService.getDisposalIncome()<=DebtPayOffService.getMonthlyPayment())
-            return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .body(warningMessage + "\n" + "Current Disposal Income: $" + debtPayOffService.getDisposalIncome() + "\n" +
-                        "current proposed monthly payment: $" + DebtPayOffService.getMonthlyPayment());
+        else if(totalMonths<=0)
+            return ResponseEntity.ok("At the current interest rate, you cannot pay off the debt with that payment amount. \nPick a higher payment amount.");
+        else if (debtPayOffService.getDisposalIncome() <= DebtPayOffService.getMonthlyPayment())
+            return ResponseEntity.ok(warningMessage +"\n" + "Current Disposal Income: $" + debtPayOffService.getDisposalIncome() + "\n" +
+                    "current proposed monthly payment: $" + DebtPayOffService.getMonthlyPayment());
         return ResponseEntity.ok(totalMonths);
     }
 

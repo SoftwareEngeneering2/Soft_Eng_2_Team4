@@ -25,22 +25,19 @@ public class DebtPayOffService {
         this.userIncomeRepository = userIncomeRepository;
     }
 
-    public int calculateMonthsToPayOff(MonthToPayOffModel monthToPayOffModel){
+
+    public int calculateMonthsToPayOff(MonthToPayOffModel monthToPayOffModel) {
         monthlyPayment = monthToPayOffModel.getMonthlyPayment();
+        double monthlyPayment = monthToPayOffModel.getMonthlyPayment();
         double principal = monthToPayOffModel.getPrincipal();
         double interest = monthToPayOffModel.getInterest();
-        double monthlyPayment = monthToPayOffModel.getMonthlyPayment();
-        int months =0;
-        double monthlyInterest = interest/12;
-
-        while(principal >0){
-        interest = principal*(monthlyInterest/100);
-        principal +=interest;
-        principal -=monthlyPayment;
-        months++;
-        }
-    return  months;
+        double monthlyInterestRate = interest / 100 / 12;
+        double numerator = Math.log(monthlyPayment) - Math.log(monthlyPayment - principal * monthlyInterestRate);
+        double denominator = Math.log(1 + monthlyInterestRate);
+        double totalMonths = Math.ceil(numerator / denominator);
+        return (int) totalMonths;
     }
+
 
     public double calculateMonthlyPayment(MonthlyPaymentModel monthlyPaymentModel) {
         double principal = monthlyPaymentModel.getPrincipal();
