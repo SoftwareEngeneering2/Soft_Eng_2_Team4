@@ -28,14 +28,13 @@ const DebtPaymentPlan = () => {
       principal: principalAmount,
       interest: interestRate,
     };
-
     let endpoint = '';
     if (paymentOption === 'monthlyPayment') {
       payload.monthlyPayment = parseFloat(monthlyPayment);
-      endpoint = '/api/v1/debt_payoff/months';
+      endpoint = 'http://localhost:8080/api/v1/debt_payoff/months';
     } else {
       payload.totalMonths = parseInt(monthsToPayOff);
-      endpoint = '/api/v1/debt_payoff/monthly_payment';
+      endpoint = 'http://localhost:8080/api/v1/debt_payoff/monthly_payment';
     }
 
     // Make HTTP POST request to the Spring Boot backend
@@ -53,7 +52,11 @@ const DebtPaymentPlan = () => {
       return response.json();
     })
     .then((data) => {
-      setResult(typeof data === 'string' ? data : JSON.stringify(data));
+      if(data == -1) {
+        setResult("Monthly payment insufficient to pay off loan.")
+      } else {
+        setResult(typeof data === 'string' ? data : JSON.stringify(data));
+      }
     })
     .catch((error) => {
       console.error('Error:', error);
