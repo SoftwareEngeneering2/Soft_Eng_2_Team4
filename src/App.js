@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import LogIn from './pages/LogIn';
 import SavingsPlan from './pages/SavingsPlan';
 import SignUp from './pages/SignUp';
+import AppDownload from './components/AppDownload';
 // Import other pages here
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/debt-payment-plan" element={<DebtPaymentPlan/>} />
         <Route path="/login" element={<LogIn/>} />
         <Route path="/signup" element={<SignUp/>} />
+        <Route path="/download-app" element={<AppDownload/>} /> 
         {/* Define other routes here */}
       </Routes>
     </BrowserRouter>

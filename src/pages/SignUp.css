@@ -35,3 +35,14 @@ html, body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* Add more styles as needed */
 }
+
+.sign-up-link {
+  color: #007bff; /* Bootstrap primary color */
+  text-decoration: none; /* Removes underline */
+}
+
+.sign-up-link:hover {
+  text-decoration: underline; /* Adds underline on hover */
+}
+
+

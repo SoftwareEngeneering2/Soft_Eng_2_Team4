@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import './AppDownload.css';
 
 const NavigationBar = () => {
   return (
@@ -15,8 +16,8 @@ const NavigationBar = () => {
             <Nav.Link as={Link} to="/debt-payment-plan">Debt Payment Plan</Nav.Link>
           </Nav>
           <Nav> {/* Align the buttons to the right */}
-            <Button variant="outline-success" as={Link} to="/login" className="me-2">Log In</Button>
-            <Button variant="success" as={Link} to="/signup">Sign Up</Button>
+            <Button variant="outline-info" as={Link} to="/login" className="button-outline-purple me-2">Log In</Button>
+            <Button variant="info" as={Link} to="/signup" className="button-purple">Sign Up</Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

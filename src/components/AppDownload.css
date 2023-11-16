@@ -1,0 +1,52 @@
+/* AppDownload.css */
+.app-download-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  
+  .coming-soon-message {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.273); /* Translucent background */
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 15px;
+    /* Add other styles to match the home screen text */
+  }
+
+  /* Custom button styles */
+.button-outline-purple {
+    color: #6f42c1; /* Bootstrap's purple for text color */
+    border: 1px solid #6f42c1; /* Bootstrap's purple for border */
+  }
+  
+  .button-outline-purple:hover,
+  .button-outline-purple:focus {
+    color: #fff; /* White text for hover/focus */
+    background-color: #6f42c1; /* Bootstrap's purple for background on hover/focus */
+    border-color: #5a32a3; /* A darker purple for border on hover/focus */
+  }
+  
+  .button-purple {
+    background-color: #6f42c1; /* Bootstrap's purple for background color */
+    border-color: #6f42c1; /* Bootstrap's purple for border */
+    color: #fff; /* White text color */
+  }
+  
+  .button-purple:hover,
+  .button-purple:focus {
+    background-color: #5a32a3; /* A darker purple for hover/focus */
+    border-color: #502b93; /* An even darker purple for border on hover/focus */
+  }
+  
+  

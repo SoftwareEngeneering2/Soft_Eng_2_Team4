@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import backgroundVideo from '../videos/videoForPages.mp4'; // Make sure this path is correct
+import backgroundVideo from '../videos/homeScreenBg.mp4'; // Make sure this path is correct
 import './Login.css'; // Make sure this path is correct
 
 const Login = () => {

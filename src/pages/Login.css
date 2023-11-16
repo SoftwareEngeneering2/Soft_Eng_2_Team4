@@ -35,7 +35,9 @@ html, body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
-.custom-translucent-bg {
-    background: rgba(0, 0, 0, 0.5); /* This is a black background with 50% opacity */
-}
+  .custom-translucent-bg {
+    background: rgba(0, 0, 0, 0.9); /* This is a black background with 50% opacity */
+    height: 200px;
+  }
+
   

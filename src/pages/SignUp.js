@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import backgroundVideo from '../videos/videoForPages.mp4'; // Make sure this path is correct
+import backgroundVideo from '../videos/homeScreenBg.mp4'; // Make sure this path is correct
 import './SignUp.css'; // Ensure you create a SignUp.css file
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -74,7 +75,11 @@ const SignUp = () => {
                   Sign Up
                 </Button>
               </div>
+              <p className='mt-3 text-center'>
+              Already have an account? <Link to="/login" className="sign-up-link">Login here</Link>
+            </p>
             </Form>
+            
           </Col>
         </Row>
       </Container>
