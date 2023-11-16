@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import LogIn from './pages/LogIn';
 import SavingsPlan from './pages/SavingsPlan';
 import SignUp from './pages/SignUp';
+import SignedUp from './pages/signedup';
 import AppDownload from './components/AppDownload';
 // Import other pages here
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<LogIn/>} />
         <Route path="/signup" element={<SignUp/>} />
         <Route path="/download-app" element={<AppDownload/>} /> 
+        <Route path="/signed-up" element={<SignedUp/>} /> 
         {/* Define other routes here */}
       </Routes>
     </BrowserRouter>
