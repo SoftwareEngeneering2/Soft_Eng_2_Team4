@@ -1,6 +1,7 @@
 package com.example.Financers.user;
 
 import com.example.Financers.userlogin.UserLoginTable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,5 +39,6 @@ public class User {
     @NotBlank
     private String lastName;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
     private UserLoginTable userLoginTable;
 }

@@ -39,11 +39,7 @@ public class UserLoginService {
             } catch (NoSuchAlgorithmException e) {
                 return Optional.empty();
             }
-            Optional<User> userFound = userLoginRepository.getUser(email, hash);
-            if(userFound.isEmpty()) {
-                System.out.printf("Email: %s, Hash Calculated: %s\n", email, hash);
-            }
-            return userFound;
+            return userLoginRepository.getUser(email, hash);
         } else {
             return Optional.empty();
         }
@@ -58,7 +54,6 @@ public class UserLoginService {
             return false;
         }
         String salt = passwordHashService.generateSalt();
-        System.out.println(salt);
         String hash;
         try {
             hash = passwordHashService.hash(password, salt);
