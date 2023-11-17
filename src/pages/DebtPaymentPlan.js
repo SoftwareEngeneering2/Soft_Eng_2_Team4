@@ -54,10 +54,16 @@ const DebtPaymentPlan = () => {
     .then((data) => {
       if(data == -1) {
         setResult("Monthly payment insufficient to pay off loan.")
+      } else if (paymentOption === 'monthlyPayment') {
+        setResult(`Duration of Payment: ${data} month${data == 1 ? "" : "s"}`)
       } else {
-        setResult(typeof data === 'string' ? data : JSON.stringify(data));
+        setResult(`Monthly Payment: $${data}`)
       }
     })
+    .then(data => {
+      
+    }
+  )
     .catch((error) => {
       console.error('Error:', error);
       setResult('Failed to calculate. Please try again.');

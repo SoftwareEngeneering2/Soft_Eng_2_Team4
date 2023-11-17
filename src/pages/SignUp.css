@@ -45,4 +45,8 @@ html, body {
   text-decoration: underline; /* Adds underline on hover */
 }
 
+.incorrect {
+  color:red;
+  text-align: center;
+}
 

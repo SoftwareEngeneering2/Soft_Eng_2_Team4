@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const navigate = useNavigate()
+  let [errorMessage, setErrorMessage] = useState('')
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -44,7 +45,8 @@ const SignUp = () => {
     })
     .catch((error) => {
       console.error('Error:', error);
-      // setResult('Failed to calculate. Please try again.');
+      setErrorMessage("")
+      setTimeout(setErrorMessage, 100, "Failed to register User Account")
     });
     console.log('Sign Up form submitted', formData);
     // You would typically handle server communication here
@@ -61,6 +63,7 @@ const SignUp = () => {
           <Col xs={12} sm={8} md={6} lg={4}>
             <Form onSubmit={handleSubmit} className="signup-form">
               <h2 className="text-center mb-4">Sign Up</h2>
+              <div className="incorrect">{errorMessage}</div>
               <Form.Group controlId="formBasicFirstName" className="mb-3">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
@@ -91,7 +94,6 @@ const SignUp = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-
               <Form.Group controlId="formBasicPassword" className="mb-3">
                 <Form.Label>Password</Form.Label>
                 <Form.Control

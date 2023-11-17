@@ -1,57 +1,65 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import backgroundVideo from '../videos/homeScreenBg.mp4'; // Make sure this path is correct
-import './Login.css'; // Make sure this path is correct
-import { Link, useNavigate } from 'react-router-dom';
+import './ResetPasswordForm.css'; // Make sure this path is correct
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-  let [errorMessage, setErrorMessage] = useState('')
+const ResetPasswordForm = () => {
+  const email = new URLSearchParams(window.location.search).get('email');
+  const checksum = new URLSearchParams(window.location.search).get('checksum');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    userLoginModel: {
+        email: email,
+        password: ''
+    },
+    checksum: checksum
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      userLoginModel: {
+        ...prevState.userLoginModel,
+        [name]: value,
+      },
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Implement your login logic here
-    let endpoint = 'http://localhost:8080/api/v2/login/existing'
+    let endpoint = 'http://localhost:8080/api/v2/login/resetPassword'
+    let pack = {
+        "userLoginModel": {
+            "email": formData.userLoginModel.email,
+            "password": formData.userLoginModel.password
+        },
+        "checksum": formData.checksum
+    }
     fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(pack),
     })
     .then((response) => {
       if (!response.ok) {
         throw new Error('Error: ' + response.status);
       }
-      return response.json();
     })
-    .then((data) => {
-      navigate(`/logged-in/?data=${JSON.stringify(data)}`)
+    .then(() => {
+      navigate('/reset-password-success')
     })
     .catch((error) => {
       console.error('Error:', error);
-      setErrorMessage("")
-      setTimeout(setErrorMessage, 100, "Incorrect Username/Password")
-      // setResult('Failed to calculate. Please try again.');
     });
-    console.log('Login form submitted', formData);
-    // You would typically handle server communication here
   };
 
   return (
-    <div className="login-container">
+    <div className="reset-password-container">
       <video autoPlay loop muted className="background-video">
         <source src={backgroundVideo} type="video/mp4" />
         Your browser does not support the video tag.
@@ -59,17 +67,15 @@ const Login = () => {
       <Container >
         <Row className="justify-content-md-center" style = {{ marginTop: '20vh'}}>
           <Col xs={12} sm={8} md={6} lg={4}>
-            <Form onSubmit={handleSubmit} className="login-form">
-              <h2 className="text-center mb-4">Login</h2>
-              <div className="incorrect">{errorMessage}</div>
+            <Form onSubmit={handleSubmit} className="reset-password-form">
+              <h2 className="text-center mb-4">Reset Password</h2>
               <Form.Group controlId="formBasicEmail" className="mb-3">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
                   placeholder="Enter email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  value={formData.userLoginModel.email}
                 />
               </Form.Group>
 
@@ -79,17 +85,16 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  value={formData.password}
+                  value={formData.userLoginModel.password}
                   onChange={handleChange}
                 />
               </Form.Group>
 
               <div className="text-center">
                 <Button variant="primary" type="submit">
-                  Login
+                  Reset Password
                 </Button>
               </div>
-              <Link to="/reset-request" className="forgot-password-link">Forgot Password?</Link>
             </Form>
           </Col>
         </Row>
@@ -98,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPasswordForm;

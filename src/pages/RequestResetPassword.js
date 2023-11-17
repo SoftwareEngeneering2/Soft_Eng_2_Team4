@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import backgroundVideo from '../videos/homeScreenBg.mp4'; // Make sure this path is correct
-import './Login.css'; // Make sure this path is correct
-import { Link, useNavigate } from 'react-router-dom';
+import './RequestResetPassword.css'; // Make sure this path is correct
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const RequestResetPassword = () => {
   let [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: ''
   });
 
   const handleChange = (e) => {
@@ -22,36 +21,35 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData.email)
     // Implement your login logic here
-    let endpoint = 'http://localhost:8080/api/v2/login/existing'
+    let endpoint = 'http://localhost:8080/api/v2/login/requestResetPassword'
     fetch(endpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
-      body: JSON.stringify(formData),
+      body: formData.email,
     })
     .then((response) => {
       if (!response.ok) {
         throw new Error('Error: ' + response.status);
       }
-      return response.json();
     })
-    .then((data) => {
-      navigate(`/logged-in/?data=${JSON.stringify(data)}`)
+    .then(() => {
+      navigate(`/reset-link-sent?email=${formData.email}`)
     })
     .catch((error) => {
       console.error('Error:', error);
       setErrorMessage("")
-      setTimeout(setErrorMessage, 100, "Incorrect Username/Password")
+      setTimeout(setErrorMessage, 100, "Could not send Reset Password link")
       // setResult('Failed to calculate. Please try again.');
     });
-    console.log('Login form submitted', formData);
     // You would typically handle server communication here
   };
 
   return (
-    <div className="login-container">
+    <div className="reset-request-container">
       <video autoPlay loop muted className="background-video">
         <source src={backgroundVideo} type="video/mp4" />
         Your browser does not support the video tag.
@@ -59,8 +57,8 @@ const Login = () => {
       <Container >
         <Row className="justify-content-md-center" style = {{ marginTop: '20vh'}}>
           <Col xs={12} sm={8} md={6} lg={4}>
-            <Form onSubmit={handleSubmit} className="login-form">
-              <h2 className="text-center mb-4">Login</h2>
+            <Form onSubmit={handleSubmit} className="reset-request-form">
+              <h4 className="text-center mb-4">Request Reset Password Link</h4>
               <div className="incorrect">{errorMessage}</div>
               <Form.Group controlId="formBasicEmail" className="mb-3">
                 <Form.Label>Email address</Form.Label>
@@ -73,23 +71,11 @@ const Login = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasicPassword" className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-
               <div className="text-center">
                 <Button variant="primary" type="submit">
-                  Login
+                  Generate Link
                 </Button>
               </div>
-              <Link to="/reset-request" className="forgot-password-link">Forgot Password?</Link>
             </Form>
           </Col>
         </Row>
@@ -98,4 +84,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RequestResetPassword;

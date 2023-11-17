@@ -1,11 +1,11 @@
-/* Login.css */
+/* SignUp.css */
 html, body {
     height: 100%;
     margin: 0;
     overflow: hidden; /* Prevents scrolling */
   }
   
-  .login-container {
+  .loggedin-container {
     position: relative;
     height: 100vh; /* Full height of the viewport */
     overflow: hidden; /* Hide anything that goes outside the container */
@@ -21,28 +21,20 @@ html, body {
     z-index: -1; /* Ensure it's behind the content */
   }
   
-  .login-content {
+  .loggedin-content {
     height: 100vh; /* Full viewport height */
     display: flex; /* Use Flexbox for centering */
     align-items: center; /* Vertical centering */
     justify-content: center; /* Horizontal centering */
   }
   
-  .login-form {
-    background: rgb(249, 249, 249); /* Semi-transparent white background */
+  .loggedin-form {
+    background: rgb(255, 255, 255); /* Semi-transparent white background */
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Add more styles as needed */
   }
-
-  .custom-translucent-bg {
-    background: rgba(0, 0, 0, 0.9); /* This is a black background with 50% opacity */
-    height: 200px;
-  }
-
-  .incorrect {
-    color:red;
-    text-align: center;
-  }
-
+  
+  
   

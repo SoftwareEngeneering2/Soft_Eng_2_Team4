@@ -13,17 +13,17 @@ const SavingsPlan = () => {
 
   const calculateSavingsPlan = () => {
     const requestData = {
-      APY: parseFloat(APY),
+      apy: parseFloat(APY),
       target: parseFloat(target),
     };
 
     let endpoint = '';
     if (calculationOption === 'expectedMonthlySavings') {
-      requestData.expectedMonthlySavings = parseFloat(expectedMonthlySavings);
-      endpoint = '/api/v1/savings_plan/calculate_by_monthly_savings';
+      requestData.monthlyAmountSaved = parseFloat(expectedMonthlySavings);
+      endpoint = 'http://localhost:8080/api/v1/savings_controller/months';
     } else {
-      requestData.desiredMonthsToSaveFor = parseInt(desiredMonthsToSaveFor);
-      endpoint = '/api/v1/savings_plan/calculate_by_desired_months';
+      requestData.months = parseInt(desiredMonthsToSaveFor);
+      endpoint = 'http://localhost:8080/api/v1/savings_controller/monthly_payment';
     }
 
     // Make HTTP POST request to the Spring Boot backend
@@ -34,8 +34,20 @@ const SavingsPlan = () => {
       },
       body: JSON.stringify(requestData),
     })
-    .then(response => response.json())
-    .then(data => setResult(typeof data === 'string' ? data : JSON.stringify(data)))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error: ' + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+        if (calculationOption === 'expectedMonthlySavings') {
+          setResult(`Duration of Saving: ${data} month${data == 1 ? "" : "s"}`)
+        } else {
+          setResult(`Amount Saved Monthly: $${data}`)
+        }
+      }
+    )
     .catch(error => console.error('Error:', error));
   };
 
@@ -48,6 +60,17 @@ const SavingsPlan = () => {
       <Container className="savings-plan-content">
         <h2 className="text-white">Savings Plan Calculator</h2>
         <Form>
+        <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm="4" className="text-white">Target Savings ($):</Form.Label>
+            <Col sm="8">
+              <Form.Control
+                type="number"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+                min="0"
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm="4" className="text-white">APY (%):</Form.Label>
             <Col sm="8">
@@ -60,19 +83,6 @@ const SavingsPlan = () => {
               />
             </Col>
           </Form.Group>
-
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm="4" className="text-white">Target Savings ($):</Form.Label>
-            <Col sm="8">
-              <Form.Control
-                type="number"
-                value={target}
-                onChange={(e) => setTarget(e.target.value)}
-                min="0"
-              />
-            </Col>
-          </Form.Group>
-
           <Row className="mb-3">
             <Col sm="6">
               <Form.Check 

@@ -1,4 +1,9 @@
 /* SavingsPlan.css */
+.savings-plan-content {
+  position: relative;
+  height: 100vh;
+  color: white;
+}
 .content-background {
   background-color: rgba(0, 0, 0, 0.8); /* White with opacity for translucence */
   border-radius: 15px; /* Rounded corners */
