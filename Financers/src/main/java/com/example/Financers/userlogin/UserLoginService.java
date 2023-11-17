@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class UserLoginService {
-    private static final String RESET_PASSWORD_LINK_FORMAT = "https://localhost:8080/reset_password_email=%s_checksum=%s";
+    private static final String RESET_PASSWORD_LINK_FORMAT = "http://localhost:3000/reset-password?email=%s&checksum=%s";
     private final UserLoginRepository userLoginRepository;
     private final UserRepository userRepository;
     private final PasswordHashService passwordHashService;

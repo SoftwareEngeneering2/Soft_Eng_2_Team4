@@ -4,6 +4,7 @@ import com.example.Financers.helpers.EmailService;
 import com.example.Financers.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v2/login")
+@CrossOrigin("*")
 public class UserLoginController {
     private final UserLoginService userLoginService;
 
@@ -60,7 +62,6 @@ public class UserLoginController {
         }
         String checksum = checksumFound.get();
         userLoginService.sendResetPasswordLink(email, checksum);
-
         return ResponseEntity.ok("Password Recovery Email Sent");
     }
 
